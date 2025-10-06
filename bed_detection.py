@@ -9,8 +9,6 @@ bed2 = DigitalInputDevice(SENSOR2_PIN, pull_up=True)
 
 lcd = CharLCD('PCF8574', 0x27)
 
-print("IR Sensor (Active LOW) - Running...")
-
 def beds_data():
     try:
         state = []
@@ -32,5 +30,5 @@ def beds_data():
     except KeyboardInterrupt:
         print("\n Stopped by user.")
 
-    return None
+    return None, None
 
