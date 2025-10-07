@@ -54,15 +54,21 @@ while True:
         print(f" Smoke Raw: {smoke_raw}, Alert: {smoke_alert}")
         print("===================\n")
 
-        # send the values to blink 
-        mqtt.publish("ds/temp", str(int(temp)) if temp else "0")
-        mqtt.publish("ds/hum", str(int(hum)) if hum else "0")
-        mqtt.publish("ds/bed1", "1" if bed1 else "0")     # 1 = vacant
-        mqtt.publish("ds/bed2", "1" if bed2 else "0")
-        mqtt.publish("ds/alarm1", "1" if alarm1 else "0")
-        mqtt.publish("ds/alarm2", "1" if alarm2 else "0")
-        mqtt.publish("ds/smoke", "1" if smoke_alert else "0")
-        mqtt.publish("ds/smoke_raw", str(smoke_raw) if smoke_raw else "0")
+        # send the values to Blynk (topics must match virtual pins)
+        mqtt.publish("ds/v0", str(int(temp)) if temp else "0")           
+        mqtt.publish("ds/v1", str(int(hum)) if hum else "0")             
+
+        # bed sensors (reverse logic: 1 = occupied, 0 = vacant)
+        mqtt.publish("ds/v2", "1" if not bed1 else "0")  
+        mqtt.publish("ds/v3", "1" if not bed2 else "0")  
+
+        # alarms
+        mqtt.publish("ds/v4", "1" if alarm1 else "0")
+        mqtt.publish("ds/v5", "1" if alarm2 else "0")
+
+        # smoke
+        mqtt.publish("ds/v6", "1" if smoke_alert else "0")
+        mqtt.publish("ds/v7", str(smoke_raw) if smoke_raw else "0")
 
         # refreah every 3seconds
         time.sleep(3)
